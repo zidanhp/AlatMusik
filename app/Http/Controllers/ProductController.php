@@ -2,75 +2,80 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use App\Models\Product; // Jika menggunakan model
 
 class ProductController extends Controller
 {
+    /**
+     * Menampilkan daftar produk
+     */
     public function index()
     {
-        $products = Product::latest()->get();
-        return view('dashboard.products', compact('products'));
+        // Jika menggunakan array statis
+        $products = [
+            [
+                'name' => 'Gitar Akustik Yamaha',
+                'category' => 'Gitar',
+                'rating' => 4.5,
+                'price' => 'Rp 150.000/hari',
+                'availability' => true,
+                'image' => 'images/gitar.jpg'
+            ],
+            [
+                'name' => 'Piano Digital Roland',
+                'category' => 'Piano',
+                'rating' => 5,
+                'price' => 'Rp 300.000/hari',
+                'availability' => true,
+                'image' => 'images/piano.jpg'
+            ],
+            // Tambahkan produk lain sesuai kebutuhan
+        ];
+
+        // Jika menggunakan database:
+        // $products = Product::all();
+
+        return view('products.index', compact('products'));
     }
 
+    /**
+     * Menampilkan form tambah produk
+     */
+    public function create()
+    {
+        return view('products.create');
+    }
+
+    /**
+     * Menyimpan produk baru
+     */
     public function store(Request $request)
     {
+        // Validasi input
         $validated = $request->validate([
-            'name' => 'required',
-            'description' => 'required',
-            'category' => 'required',
-            'stock' => 'required|integer|min:0',
-            'price' => 'required|numeric|min:0',
-            'image' => 'nullable|image|max:2048',
+            'name' => 'required|string|max:255',
+            'category' => 'required|string|max:255',
+            'rating' => 'required|numeric|min:0|max:5',
+            'price' => 'required|string',
+            'availability' => 'required|boolean',
+            'image' => 'required|image|mimes:jpeg,png,jpg|max:2048'
         ]);
 
-        if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('public/products');
-            $validated['image_path'] = Storage::url($path);
+        // Upload gambar
+        if($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('product_images', 'public');
+            $validated['image'] = $imagePath;
         }
 
-        Product::create($validated);
+        // Jika menggunakan array (simpan ke session)
+        // $products = session('products', []);
+        // $products[] = $validated;
+        // session(['products' => $products]);
 
-        return redirect()->route('products.index')->with('success', 'Produk berhasil ditambahkan');
-    }
+        // Jika menggunakan database:
+        // Product::create($validated);
 
-    public function update(Request $request, Product $product)
-    {
-        $validated = $request->validate([
-            'name' => 'required',
-            'description' => 'required',
-            'category' => 'required',
-            'stock' => 'required|integer|min:0',
-            'price' => 'required|numeric|min:0',
-            'image' => 'nullable|image|max:2048',
-        ]);
-
-        if ($request->hasFile('image')) {
-            // Delete old image if exists
-            if ($product->image_path) {
-                $oldImage = str_replace('/storage', 'public', $product->image_path);
-                Storage::delete($oldImage);
-            }
-
-            $path = $request->file('image')->store('public/products');
-            $validated['image_path'] = Storage::url($path);
-        }
-
-        $product->update($validated);
-
-        return redirect()->route('products.index')->with('success', 'Produk berhasil diperbarui');
-    }
-
-    public function destroy(Product $product)
-    {
-        if ($product->image_path) {
-            $oldImage = str_replace('/storage', 'public', $product->image_path);
-            Storage::delete($oldImage);
-        }
-
-        $product->delete();
-
-        return redirect()->route('products.index')->with('success', 'Produk berhasil dihapus');
+        return redirect()->route('products.index')->with('success', 'Produk berhasil ditambahkan!');
     }
 }

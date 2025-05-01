@@ -2,33 +2,33 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
     public function showLoginForm()
     {
-        return view('auth.login');
+        return view('auth.login'); // Pastikan file ada di resources/views/auth/login.blade.php
     }
 
     public function login(Request $request)
     {
         $credentials = $request->validate([
-            'username' => 'required',
+            'email' => 'required|email', // Ubah ini jika ingin menggunakan username
             'password' => 'required',
         ]);
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->intended('dashboard');
+            return redirect()->intended('/');
         }
 
         return back()->withErrors([
-            'username' => 'Username atau password salah.',
-        ]);
+            'email' => 'Email atau password salah.',
+        ])->onlyInput('email');
     }
 
     public function showRegistrationForm()
@@ -39,21 +39,22 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $validated = $request->validate([
-            'username' => 'required|unique:users',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|confirmed|min:8',
-            'phone' => 'required',
-            'name' => 'required',
+            'name' => 'required|string|max:255',
+            'username' => 'required|string|max:255|unique:users', // Tambahkan validasi username
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
         ]);
-
-        $validated['password'] = Hash::make($validated['password']);
-        $validated['role'] = 'staff';
-
-        $user = User::create($validated);
+    
+        $user = User::create([
+            'name' => $validated['name'],
+            'username' => $validated['username'], // Tambahkan username
+            'email' => $validated['email'],
+            'password' => Hash::make($validated['password']),
+        ]);
 
         Auth::login($user);
 
-        return redirect()->route('dashboard');
+        return redirect('/')->with('success', 'Registrasi berhasil!');
     }
 
     public function logout(Request $request)

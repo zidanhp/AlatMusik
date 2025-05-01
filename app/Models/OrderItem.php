@@ -19,4 +19,10 @@ class OrderItem extends Model
     {
         return $this->belongsTo(Product::class);
     }
+    
+    // Di model Pemesanan
+    public function items()
+    {
+        return $this->hasMany(ItemPemesanan::class, 'id_pemesanan');
+    }
 }

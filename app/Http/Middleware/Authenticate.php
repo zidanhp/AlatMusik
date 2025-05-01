@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class Authenticate
 {
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next)
     {
         if (!auth()->check()) {
             return redirect()->route('login');
