@@ -1,35 +1,44 @@
-@extends('layouts.app')
+@extends('layouts.main')
 
 @section('title', 'Dashboard')
 
 @section('content')
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
-    @include('components.stat-card', [
-        'title' => 'Total Pemesanan',
-        'value' => $totalOrders,
-        'icon' => 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z',
-        'color' => 'bg-gradient-to-br from-amber-200 to-gray-600 to-gray-900'
-    ])
+<div class="bg-white rounded-lg shadow-xl p-5">
+    <h2 class="text-2xl font-bold mb-5">Dashboard</h2>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+        <!-- Card Total Alat Musik -->
+        <div class="bg-gradient-to-r from-blue-500 to-blue-700 rounded-lg p-6 text-white">
+            <div class="flex justify-between items-center">
+                <div>
+                    <p class="font-light">Total Alat Musik</p>
+                    <h3 class="text-3xl font-bold">{{ $total_alat_musik }}</h3>
+                </div>
+                <div class="bg-white bg-opacity-20 p-3 rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+            </div>
+        </div>
 
-    @include('components.stat-card', [
-        'title' => 'Total Produk',
-        'value' => $totalProducts,
-        'icon' => 'M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4',
-        'color' => 'bg-gradient-to-br from-amber-200 to-gray-600 to-gray-900'
-    ])
+        <!-- Card Total Users -->
+        <div class="bg-gradient-to-r from-green-500 to-green-700 rounded-lg p-6 text-white">
+            <div class="flex justify-between items-center">
+                <div>
+                    <p class="font-light">Total Pengguna</p>
+                    <h3 class="text-3xl font-bold">{{ $total_users }}</h3>
+                </div>
+                <div class="bg-white bg-opacity-20 p-3 rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    @include('components.stat-card', [
-        'title' => 'Total Pelanggan',
-        'value' => $totalCustomers,
-        'icon' => 'M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z',
-        'color' => 'bg-gradient-to-br from-amber-200 to-gray-600 to-gray-900'
-    ])
-
-    @include('components.stat-card', [
-        'title' => 'Total Pengembalian',
-        'value' => $totalReturns,
-        'icon' => 'M16 15v-1a4 4 0 00-4-4H8m0 0l3 3m-3-3l3-3m9 14V5a2 2 0 00-2-2H6a2 2 0 00-2 2v16l4-2 4 2 4-2 4 2z',
-        'color' => 'bg-gradient-to-br from-amber-200 to-gray-600 to-gray-900'
-    ])
+    <!-- Tabel atau konten lain -->
+    @include('dashboard.items.table')
 </div>
 @endsection
