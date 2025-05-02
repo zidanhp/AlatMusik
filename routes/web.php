@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PemesananController;
 use App\Http\Controllers\AlatMusikController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
@@ -43,18 +44,21 @@ Route::middleware('auth')->group(function () {
 });
 
 // Admin Only Routes
-Route::middleware(['auth', 'admin'])->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+Route::middleware(['auth', AdminMiddleware::class])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard.index2');
+    })->name('admin.dashboard');
     
     // Products
     Route::resource('products', ProductController::class)->except(['show']);
     
     // Alat Musik
     Route::resource('alatmusik', AlatMusikController::class);
+
+    Route::get('/dashboard/orders', [PemesananController::class, 'index'])->name('dashboard.orders');
     
     // Orders
     Route::prefix('orders')->group(function () {
-        Route::get('/', [OrderController::class, 'adminIndex'])->name('admin.orders.index');
         Route::get('/{order}', [OrderController::class, 'show'])->name('admin.orders.show');
         Route::post('/{order}/approve', [OrderController::class, 'approve'])->name('admin.orders.approve');
         Route::post('/{order}/complete', [OrderController::class, 'complete'])->name('admin.orders.complete');

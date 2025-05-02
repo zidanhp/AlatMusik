@@ -55,7 +55,7 @@ class LoginController extends Controller
         
         // Atau jika Anda ingin admin tetap ke dashboard admin
         if ($user->role === 'admin') {
-            return redirect()->route('dashboard');
+            return redirect('/dashboard');
         }
         return redirect('/');
     }

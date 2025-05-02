@@ -17,11 +17,6 @@ class DashboardController extends Controller  // Pastikan extend Controller
 
     public function index()
     {
-        $stats = [
-            'total_alat_musik' => AlatMusik::count(),
-            'total_users' => User::where('role', '!=', 'admin')->count(),
-        ];
-
-        return view('dashboard.index', compact('stats'));
+        return view('dashboard.index2');
     }
 }

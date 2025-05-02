@@ -9,12 +9,9 @@ class AdminMiddleware
 {
     public function handle(Request $request, Closure $next)
     {
-        if (!auth()->check()) {
-            return redirect()->route('login');
-        }
-
-        if (auth()->user()->role !== 'admin') {
-            abort(403, 'Akses ditolak');
+        // Cek apakah user admin, jika tidak redirect ke halaman lain
+        if (!auth()->user() || auth()->user()->role !== 'admin') {
+            return redirect('/login');
         }
 
         return $next($request);
