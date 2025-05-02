@@ -1,7 +1,7 @@
 <div id="sidebar" class="sidebar">
     <ul class="menu p-4 pt-20">
-      <li class="mb-2"><a href="dashboard" class="font-medium">Dasbor</a></li>
-      <li class="mb-2"><a href="/alatmusik" class="font-medium">Alat Musik</a></li>
+      <li class="mb-2"><a href="/dashboard" class="font-medium">Dasbor</a></li>
+      <li class="mb-2"><a href="/dashboard/produk" class="font-medium">Alat Musik</a></li>
       <li class="mb-2"><a href="/dashboard/orders" class="font-medium">Pemesanan</a></li>
       <li class="mb-2"><a href="/alatmusik" class="font-medium">Peminjaman</a></li>
       <li class="mb-2"><a href="/alatmusik" class="font-medium">Pengembalian</a></li>

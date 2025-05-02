@@ -22,7 +22,7 @@ class PemesananController extends Controller
                 ->where('ip.id_pemesanan', $p->id)
                 ->get();
         }
+        return view('dashboard.orders', compact('pemesanan'));
 
-        return view('dashboard.orders');
     }
 }

@@ -6,24 +6,18 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    // database/migrations/xxxx_xx_xx_create_produk_table.php
     public function up()
     {
-        Schema::create('products', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->text('description')->nullable();
-            $table->enum('category', ['Kordofon', 'Aerofon', 'Elektrofon', 'Membranofon', 'Idiofon']);
-            $table->integer('stock');
-            $table->decimal('price', 10, 2);
-            $table->string('image_path')->nullable();
-            $table->decimal('average_rating', 3, 2)->default(0);
-            $table->integer('total_reviews')->default(0);
-            $table->timestamps();
+        Schema::create('produk', function (Blueprint $table) {
+            $table->id('id_produk');
+            $table->string('nama_produk');
+            $table->text('deskripsi')->nullable();
+            $table->integer('stok');
+            $table->decimal('harga', 10, 2);
+            $table->string('kategori');
+            $table->string('path_gambar')->nullable();
         });
-    }
-
-    public function down()
-    {
-        Schema::dropIfExists('products');
+        
     }
 };

@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\PemesananController;
 use App\Http\Controllers\AlatMusikController;
 use App\Http\Controllers\ProductController;
@@ -47,7 +48,7 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', AdminMiddleware::class])->group(function () {
     Route::get('/dashboard', function () {
         return view('dashboard.index2');
-    })->name('admin.dashboard');
+    })->name('dashboard.index2');
     
     // Products
     Route::resource('products', ProductController::class)->except(['show']);
@@ -58,12 +59,11 @@ Route::middleware(['auth', AdminMiddleware::class])->group(function () {
     Route::get('/dashboard/orders', [PemesananController::class, 'index'])->name('dashboard.orders');
     
     // Orders
-    Route::prefix('orders')->group(function () {
-        Route::get('/{order}', [OrderController::class, 'show'])->name('admin.orders.show');
-        Route::post('/{order}/approve', [OrderController::class, 'approve'])->name('admin.orders.approve');
-        Route::post('/{order}/complete', [OrderController::class, 'complete'])->name('admin.orders.complete');
-        Route::post('/{order}/cancel', [OrderController::class, 'cancel'])->name('admin.orders.cancel');
-    });
+    Route::get('/dashboard/produk', [ProdukController::class, 'index'])->name('dashboard.produk.index');
+    Route::get('/dashboard/produk/create', [ProdukController::class, 'create'])->name('dashboard.produk.create');
+    Route::post('/produk', [ProdukController::class, 'store'])->name('produk.store');
+    Route::put('/produk/{id}', [ProdukController::class, 'update'])->name('produk.update');
+    Route::post('/produk/{id}', [ProdukController::class, 'destroy'])->name('produk.destroy');;
     
     // Returns
     Route::prefix('returns')->group(function () {
